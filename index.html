@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARTIPACK! — Jualan Packaging Ziplock & Keripik Sukun Premium</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f2fbf7', 100: '#e1f7ed', 200: '#c2edd9', 300: '#93dcbf', 400: '#5cc29f',
+                            500: '#34a682', 600: '#258668', 700: '#206b55', 800: '#1d5646', 900: '#19473b', 950: '#0c2822',
+                        },
+                        accent: { gold: '#f59e0b', amber: '#d97706' }
+                    },
+                    fontFamily: { sans: ['Plus Jakarta Sans', 'Inter', 'sans-serif'] }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts & FontAwesome -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        html { scroll-behavior: smooth; font-family: 'Plus Jakarta Sans', sans-serif; }
+        .star-rating i { cursor: pointer; color: #CBD5E1; transition: color 0.2s; }
+        .star-rating i.active { color: #F59E0B; }
+        .pouch-container { filter: drop-shadow(0 30px 25px rgba(12, 40, 34, 0.4)); }
+        .pouch-alufoil-silver {
+            background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 18%, #f8fafc 35%, #475569 60%, #94a3b8 80%, #ffffff 100%);
+            border: 1px solid rgba(255, 255, 255, 0.95);
+            border-radius: 12px 12px 32px 32px / 6px 6px 36px 36px;
+            box-shadow: inset -10px 0 20px rgba(0,0,0,0.22), inset 10px 0 20px rgba(255,255,255,1), inset 0 -20px 25px rgba(0,0,0,0.28), 0 15px 30px rgba(0,0,0,0.25);
+        }
+        .pouch-matte-black {
+            background: linear-gradient(160deg, #27272a 0%, #09090b 70%, #18181b 100%);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 12px 12px 32px 32px / 6px 6px 36px 36px;
+            box-shadow: inset -10px 0 22px rgba(0,0,0,0.9), inset 5px 0 12px rgba(255,255,255,0.18), 0 15px 30px rgba(0,0,0,0.35);
+        }
+        .pouch-matte-white {
+            background: linear-gradient(160deg, #ffffff 0%, #e2e8f0 100%);
+            border: 1px solid rgba(203, 213, 225, 0.9);
+            border-radius: 12px 12px 32px 32px / 6px 6px 36px 36px;
+            box-shadow: inset -8px 0 15px rgba(0,0,0,0.08), inset 8px 0 15px rgba(255,255,255,1), 0 15px 30px rgba(0,0,0,0.2);
+        }
+        .half-window-frosted {
+            background: rgba(255, 255, 255, 0.4); backdrop-filter: blur(8px);
+            border-top: 1px solid rgba(255, 255, 255, 0.7); border-bottom: 1px solid rgba(255, 255, 255, 0.7);
+            box-shadow: inset 0 4px 8px rgba(0,0,0,0.2);
+        }
+        .zipper-press-line { background: repeating-linear-gradient(90deg, #334155, #334155 3px, transparent 3px, transparent 7px); height: 3px; opacity: 0.85; }
+        .tear-left { position: absolute; left: -3px; top: 22px; width: 6px; height: 9px; background: #1e293b; clip-path: polygon(0 0, 100% 50%, 0 100%); }
+        .tear-right { position: absolute; right: -3px; top: 22px; width: 6px; height: 9px; background: #1e293b; clip-path: polygon(100% 0, 0 50%, 100% 100%); }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased flex flex-col min-h-screen selection:bg-brand-300 selection:text-brand-950">
+
+    <!-- PROMO BANNER -->
+    <div class="bg-gradient-to-r from-accent-gold via-amber-400 to-accent-gold text-brand-950 font-bold text-xs py-2.5 px-4 text-center shadow-sm flex items-center justify-center gap-2">
+        <i class="fa-solid fa-truck-fast text-sm"></i>
+        <span id="promo-banner-text">PROMO SPESIAL: <b>FREE ONGKIR KHUSUS AREA TELANG!</b> (Luar Area Telang Ongkir Flat Rp 3.000)</span>
+    </div>
+
+    <!-- NAVBAR -->
+    <nav class="bg-brand-950/95 backdrop-blur-md text-white sticky top-0 z-50 border-b border-brand-800/50 shadow-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <div class="flex items-center gap-3">
+                    <span class="text-2xl lg:text-3xl font-extrabold tracking-tight text-white">ARTI<span class="text-brand-300">PACK!</span></span>
+                    <span id="nav-status-badge" class="px-3 py-1 text-[11px] font-bold rounded-full flex items-center gap-1.5 bg-brand-900 border border-brand-700/50 text-slate-300">
+                        <span id="nav-status-dot" class="w-2 h-2 rounded-full bg-slate-400"></span>
+                        <span id="nav-status-text">Memeriksa...</span>
+                    </span>
+                </div>
+                
+                <div class="hidden lg:flex items-center space-x-8 text-sm font-medium text-slate-200">
+                    <a id="edit-nav1" href="#beranda" class="hover:text-brand-300 transition">Beranda</a>
+                    <a id="edit-nav2" href="#jambuka" class="hover:text-brand-300 transition">Jam Buka</a>
+                    <a id="edit-nav3" href="#katalog" class="hover:text-brand-300 transition">Katalog</a>
+                    <a id="edit-nav4" href="#pembayaran" class="hover:text-brand-300 transition">Pembayaran</a>
+                    <a id="edit-nav5" href="#ulasan" class="hover:text-brand-300 transition">Ulasan</a>
+                    <a id="edit-nav6" href="#tentang" class="hover:text-brand-300 transition">Tentang Kami</a>
+                    <a id="edit-nav7" href="#kontak" class="hover:text-brand-300 transition">Kontak</a>
+                </div>
+
+                <div class="flex items-center gap-3">
+                    <button onclick="openCartModal()" class="relative bg-brand-500 text-white font-bold px-4 py-2.5 rounded-xl hover:bg-brand-400 transition shadow-md flex items-center gap-2">
+                        <i class="fa-solid fa-bag-shopping text-sm"></i>
+                        <span id="cart-count" class="bg-white text-brand-950 text-xs w-5 h-5 rounded-full flex items-center justify-center font-extrabold">0</span>
+                    </button>
+                    <a href="seller.html" class="border border-brand-300/40 text-brand-300 px-3.5 py-2 rounded-xl hover:bg-brand-300 hover:text-brand-950 text-xs font-bold transition">
+                        <i class="fa-solid fa-user-shield"></i> Portal Seller
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section id="beranda" class="relative bg-gradient-to-b from-brand-950 via-brand-900 to-brand-800 text-white py-20 lg:py-28 overflow-hidden">
+        <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[550px] bg-brand-400/25 rounded-full blur-[140px] pointer-events-none"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-2 gap-12 items-center relative z-10">
+            <div>
+                <span id="edit-hero-badge" class="inline-flex items-center gap-2 bg-brand-800/80 border border-brand-500/30 text-brand-300 font-bold text-xs px-3.5 py-1.5 rounded-full mb-4">
+                    <i class="fa-solid fa-sparkles text-accent-gold"></i> Pusat Kemasan & Cemilan Keripik Sukun
+                </span>
+                <h1 id="edit-hero-title" class="text-4xl lg:text-6xl font-extrabold tracking-tight leading-[1.15]">
+                    Solusi Kemasan <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-300 via-brand-200 to-white">Ziplock & Keripik Lezat</span>
+                </h1>
+                <p id="edit-hero-desc" class="mt-5 text-slate-300 text-base lg:text-lg leading-relaxed max-w-xl">
+                    Menyediakan standing pouch aluminium foil & window half matte berkualitas tinggi serta keripik sukun renyah khas berkualitas.
+                </p>
+                <div class="mt-8 flex flex-wrap gap-4">
+                    <a id="edit-hero-btn1" href="#katalog" class="bg-gradient-to-r from-brand-400 to-brand-500 text-brand-950 font-extrabold px-7 py-3.5 rounded-xl hover:shadow-lg transition">Lihat Katalog Produk</a>
+                    <a id="edit-hero-btn2" href="#pembayaran" class="bg-brand-900/80 border border-brand-600 text-slate-200 font-semibold px-7 py-3.5 rounded-xl hover:bg-brand-800 transition">Info Pembayaran</a>
+                </div>
+            </div>
+            <div class="flex justify-center items-center relative py-6">
+                <div class="relative w-80 h-96 flex items-center justify-center pouch-container">
+                    <div class="absolute -left-3 top-2 w-48 h-80 pouch-alufoil-silver transform -rotate-10 flex flex-col justify-between p-3.5 z-10 overflow-hidden">
+                        <div class="tear-left"></div><div class="tear-right"></div>
+                        <div><div class="h-2.5 border-b border-slate-500/80 mb-1"></div><div class="zipper-press-line"></div></div>
+                        <div class="bg-white/95 backdrop-blur-md p-3 rounded-xl text-center border border-slate-300 shadow-2xl my-auto mx-1">
+                            <span class="text-[9px] font-black text-slate-900 block tracking-wider">ALUMINIUM FOIL</span>
+                        </div>
+                        <div class="text-[8px] text-center font-extrabold text-slate-800 bg-slate-200/90 py-1.5 rounded-lg">Standing Pouch Ziplock</div>
+                    </div>
+                    <div class="absolute right-0 bottom-0 w-52 h-88 pouch-matte-black transform rotate-6 flex flex-col justify-between z-20 overflow-hidden p-3.5">
+                        <div class="tear-left"></div><div class="tear-right"></div>
+                        <div><div class="h-2.5 border-b border-zinc-700 mb-1"></div><div class="zipper-press-line opacity-50"></div></div>
+                        <div class="bg-white mx-3 p-3.5 rounded-xl text-center shadow-2xl border border-zinc-200">
+                            <i class="fa-solid fa-leaf text-brand-700 text-sm mb-1"></i>
+                            <p class="text-[10px] font-black text-slate-900">ARTIPACK</p>
+                        </div>
+                        <div class="h-24 half-window-frosted w-full rounded-lg my-auto flex items-center justify-center border border-white/20">
+                            <span class="text-[8px] font-black text-white bg-black/70 px-3 py-1.5 rounded-full">HD WINDOW</span>
+                        </div>
+                        <div class="bg-zinc-900 py-1.5 text-center text-[8px] font-extrabold text-zinc-400 rounded-b-xl">Standing Bottom</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- JAM BUKA -->
+    <section id="jambuka" class="py-12 bg-white border-b border-slate-200/80">
+        <div class="max-w-4xl mx-auto px-4 text-center">
+            <h2 id="edit-hours-title" class="text-2xl font-extrabold text-brand-950 mb-1">🕒 Jam Operasional Toko</h2>
+            <p id="edit-hours-desc" class="text-slate-500 text-sm mb-6">Status operasional otomatis diperbarui secara realtime.</p>
+            <div id="status-card" class="p-6 rounded-2xl shadow-sm border transition flex flex-col md:flex-row items-center justify-between gap-4">
+                <div class="text-left">
+                    <h3 id="edit-hours-main" class="font-bold text-slate-800 text-base">Jam Kerja: 08.00 - 20.00 WIB</h3>
+                    <p id="edit-hours-note" class="text-xs text-slate-500 mt-1">Buka Setiap Hari (Kecuali Hari Minggu & Hari Libur Nasional)</p>
+                </div>
+                <div id="status-indicator" class="px-5 py-2.5 rounded-xl font-extrabold text-xs flex items-center gap-2"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- KATALOG PRODUK -->
+    <section id="katalog" class="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-2xl mx-auto mb-14">
+            <span id="edit-catalog-kicker" class="text-brand-600 font-bold text-xs uppercase tracking-widest">Koleksi Pilihan</span>
+            <h2 id="edit-catalog-title" class="text-3xl lg:text-4xl font-extrabold text-brand-950 mt-1">📦 Katalog Kemasan & Cemilan ARTIPACK</h2>
+            <p id="edit-catalog-desc" class="text-slate-600 mt-2 text-sm">Pilihan plastik ziplock kedap udara, stiker custom, serta keripik sukun renyah berkualitas.</p>
+        </div>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-7">
+            <!-- Paket 1 -->
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 overflow-hidden flex flex-col justify-between hover:shadow-xl transition">
+                <div>
+                    <div class="h-56 bg-slate-100/70 flex items-center justify-center relative p-3 border-b border-slate-100 pouch-container">
+                        <div class="w-32 h-44 pouch-alufoil-silver transform -rotate-2 flex flex-col justify-between p-2 relative">
+                            <div class="tear-left"></div><div class="tear-right"></div>
+                            <div class="h-1.5 border-b border-slate-400"></div>
+                            <div class="text-center my-auto bg-white/95 p-1.5 rounded-lg border">
+                                <span class="text-[8px] font-black text-slate-900 block">ALUFOIL 3D</span>
+                            </div>
+                            <div class="text-center text-[7px] text-slate-700 font-bold bg-slate-200/90 py-0.5 rounded">Standing Bottom</div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <span class="bg-brand-50 text-brand-700 border border-brand-200 text-[10px] font-extrabold px-2.5 py-1 rounded-full">Paket 1</span>
+                        <h3 id="edit-p1-name" class="text-lg font-bold text-brand-950 mt-2">Plastik Ziplock Saja</h3>
+                        <p id="edit-p1-desc" class="text-slate-600 text-xs mt-1">Standing Pouch Ziplock Aluminium Foil Silver kedap udara.</p>
+                        <p id="edit-p1-note" class="text-rose-600 font-extrabold text-xs mt-3 bg-rose-50 p-2 rounded-lg border border-rose-100"><i class="fa-solid fa-ban text-xs"></i> Tidak menerima Ziplock Sablon</p>
+                        <p class="text-amber-700 font-bold text-[11px] mt-2.5"><i class="fa-solid fa-circle-exclamation"></i> <span id="edit-p1-min">Min. Order: 10 pcs</span></p>
+                        <div class="mt-4 border-t border-slate-100 pt-3">
+                            <label class="block text-xs font-semibold text-slate-500 mb-1">Ukuran Kemasan:</label>
+                            <select id="size-p1" class="w-full p-2.5 border rounded-xl text-xs bg-slate-50 text-slate-700">
+                                <option value="100 gram">100 gram</option><option value="200 gram">200 gram</option><option value="250 gram">250 gram</option><option value="300 gram">300 gram</option><option value="400 gram">400 gram</option><option value="500 gram">500 gram</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-5 bg-slate-50/80 border-t space-y-2">
+                    <button onclick="addToCart('Paket 1: Ziplock Saja', 'size-p1')" id="edit-p1-add" class="w-full bg-brand-600 text-white font-bold py-2.5 rounded-xl hover:bg-brand-700 transition text-xs">+ Tambah Keranjang</button>
+                    <button onclick="orderDirectWAWithGPS('Paket 1: '+getSiteContent().p1Name, 'size-p1')" class="w-full bg-emerald-600 text-white font-bold py-2.5 rounded-xl hover:bg-emerald-700 transition text-xs flex items-center justify-center gap-1.5"><i class="fa-brands fa-whatsapp text-sm"></i> Order WhatsApp + Lokasi</button>
+                </div>
+            </div>
+
+            <!-- Paket 2 -->
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 overflow-hidden flex flex-col justify-between hover:shadow-xl transition">
+                <div>
+                    <div class="h-56 bg-slate-900 flex items-center justify-center relative p-3 border-b border-slate-800 pouch-container">
+                        <div class="w-32 h-44 pouch-matte-black transform rotate-2 flex flex-col justify-between border border-zinc-800 relative overflow-hidden p-2">
+                            <div class="tear-left"></div><div class="tear-right"></div>
+                            <div class="h-1.5 border-b border-zinc-700"></div>
+                            <div class="bg-white rounded-lg p-1.5 mx-1 text-center my-auto shadow-md">
+                                <p class="text-[7px] font-black text-slate-900">LOGO BRAND</p>
+                            </div>
+                            <div class="h-12 half-window-frosted w-full border-t border-b border-white/20"></div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <span class="bg-brand-50 text-brand-700 border border-brand-200 text-[10px] font-extrabold px-2.5 py-1 rounded-full">Paket 2</span>
+                        <h3 id="edit-p2-name" class="text-lg font-bold text-brand-950 mt-2">Ziplock + Stiker</h3>
+                        <p id="edit-p2-desc" class="text-slate-600 text-xs mt-1">Standing pouch Window Half Matte + stiker pilihan.</p>
+                        <p id="edit-p2-min" class="text-amber-700 font-bold text-[11px] mt-3"><i class="fa-solid fa-circle-exclamation"></i> Min. Order 10 pcs</p>
+                        <div class="mt-4 border-t border-slate-100 pt-3 space-y-3">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-500 mb-1">Ukuran Kemasan:</label>
+                                <select id="size-p2" class="w-full p-2.5 border rounded-xl text-xs bg-slate-50 text-slate-700">
+                                    <option value="100 gram">100 gram</option><option value="200 gram">200 gram</option><option value="250 gram">250 gram</option><option value="300 gram">300 gram</option><option value="400 gram">400 gram</option><option value="500 gram">500 gram</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-500 mb-1">Ukuran Stiker:</label>
+                                <select id="sticker-size-p2" class="w-full p-2.5 border rounded-xl text-xs bg-slate-50 text-slate-700">
+                                    <option value="5x7 cm">5x7 cm</option><option value="6x9 cm">6x9 cm</option><option value="7x10 cm">7x10 cm</option><option value="8x12 cm">8x12 cm</option><option value="9x12 cm">9x12 cm</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-5 bg-slate-50/80 border-t space-y-2">
+                    <button onclick="addPaket2ToCart()" id="edit-p2-add" class="w-full bg-brand-600 text-white font-bold py-2.5 rounded-xl hover:bg-brand-700 transition text-xs">+ Tambah Keranjang</button>
+                    <button onclick="orderDirectWAPaket2WithGPS()" class="w-full bg-emerald-600 text-white font-bold py-2.5 rounded-xl hover:bg-emerald-700 transition text-xs flex items-center justify-center gap-1.5"><i class="fa-brands fa-whatsapp text-sm"></i> Order WhatsApp + Lokasi</button>
+                </div>
+            </div>
+
+            <!-- Paket 3 -->
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 overflow-hidden flex flex-col justify-between hover:shadow-xl transition">
+                <div>
+                    <div class="h-56 bg-slate-100/70 flex items-center justify-center relative p-3 border-b pouch-container">
+                        <div class="w-32 h-44 pouch-matte-white transform -rotate-1 flex flex-col justify-between border relative overflow-hidden p-2">
+                            <div class="tear-left"></div><div class="tear-right"></div>
+                            <div class="h-1.5 border-b"></div>
+                            <div class="bg-white rounded-lg p-1.5 mx-1 text-center my-auto shadow-md">
+                                <p class="text-[7px] font-black text-brand-950">KERIPIK SUKUN</p>
+                            </div>
+                            <div class="h-12 half-window-frosted w-full flex items-center justify-center">
+                                <span class="text-[7px] font-black text-amber-800 bg-white/90 px-2 py-0.5 rounded">ISI KERIPIK</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <span class="bg-brand-50 text-brand-700 border border-brand-200 text-[10px] font-extrabold px-2.5 py-1 rounded-full">Paket 3</span>
+                        <h3 id="edit-p3-name" class="text-lg font-bold text-brand-950 mt-2">Bundling Keripik Sukun</h3>
+                        <p id="edit-p3-desc" class="text-slate-600 text-xs mt-1">Paket lengkap Ziplock + Stiker + Isi Keripik Sukun renyah.</p>
+                        <div class="mt-4 border-t border-slate-100 pt-3">
+                            <label class="block text-xs font-semibold text-slate-500 mb-1">Ukuran Kemasan:</label>
+                            <select id="size-p3" class="w-full p-2.5 border rounded-xl text-xs bg-slate-50 text-slate-700">
+                                <option value="100 gram">100 gram</option><option value="200 gram">200 gram</option><option value="250 gram">250 gram</option><option value="300 gram">300 gram</option><option value="400 gram">400 gram</option><option value="500 gram">500 gram</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-5 bg-slate-50/80 border-t space-y-2">
+                    <button onclick="addToCart('Paket 3: Bundling Keripik Sukun', 'size-p3')" id="edit-p3-add" class="w-full bg-brand-600 text-white font-bold py-2.5 rounded-xl hover:bg-brand-700 transition text-xs">+ Tambah Keranjang</button>
+                    <button onclick="orderDirectWAWithGPS('Paket 3: '+getSiteContent().p3Name, 'size-p3')" class="w-full bg-emerald-600 text-white font-bold py-2.5 rounded-xl hover:bg-emerald-700 transition text-xs flex items-center justify-center gap-1.5"><i class="fa-brands fa-whatsapp text-sm"></i> Order WhatsApp + Lokasi</button>
+                </div>
+            </div>
+
+            <!-- Paket 4 -->
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 overflow-hidden flex flex-col justify-between hover:shadow-xl transition">
+                <div>
+                    <div class="h-56 bg-brand-50/50 flex items-center justify-center relative p-3 border-b">
+                        <div class="w-32 h-40 bg-white rounded-2xl shadow-lg border-2 border-dashed border-brand-400 flex flex-col items-center justify-center p-3 text-center">
+                            <i class="fa-solid fa-note-sticky text-3xl text-brand-500 mb-2"></i>
+                            <span class="text-[10px] font-black text-brand-950 uppercase">Custom Stiker</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <span class="bg-brand-50 text-brand-700 border border-brand-200 text-[10px] font-extrabold px-2.5 py-1 rounded-full">Paket 4</span>
+                        <h3 id="edit-p4-name" class="text-lg font-bold text-brand-950 mt-2">Custom Stiker</h3>
+                        <p id="edit-p4-desc" class="text-slate-600 text-xs mt-1">Cetak stiker produk custom berkualitas HD.</p>
+                        <div class="mt-4 border-t border-slate-100 pt-3 space-y-3">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-500 mb-1">Jumlah (pcs):</label>
+                                <input type="number" id="qty-sticker-p4" min="10" value="10" class="w-full p-2.5 border rounded-xl text-xs bg-slate-50">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-500 mb-1">Ukuran Stiker:</label>
+                                <select id="size-sticker-p4" class="w-full p-2.5 border rounded-xl text-xs bg-slate-50 text-slate-700">
+                                    <option value="5x7 cm">5x7 cm</option><option value="6x9 cm">6x9 cm</option><option value="7x10 cm">7x10 cm</option><option value="8x12 cm">8x12 cm</option><option value="9x12 cm">9x12 cm</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-5 bg-slate-50/80 border-t space-y-2">
+                    <button onclick="addPaket4ToCart()" id="edit-p4-add" class="w-full bg-brand-600 text-white font-bold py-2.5 rounded-xl hover:bg-brand-700 transition text-xs">+ Tambah Keranjang</button>
+                    <button onclick="orderDirectWAPaket4WithGPS()" class="w-full bg-emerald-600 text-white font-bold py-2.5 rounded-xl hover:bg-emerald-700 transition text-xs flex items-center justify-center gap-1.5"><i class="fa-brands fa-whatsapp text-sm"></i> Order WhatsApp + Lokasi</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PEMBAYARAN -->
+    <section id="pembayaran" class="py-20 bg-gradient-to-b from-brand-50 to-slate-50 border-t border-b">
+        <div class="max-w-5xl mx-auto px-4">
+            <div class="text-center mb-12">
+                <span id="edit-payment-kicker" class="text-brand-600 font-bold text-xs uppercase tracking-widest">Transaksi Aman & Praktis</span>
+                <h2 id="edit-payment-title" class="text-3xl lg:text-4xl font-extrabold text-brand-950 mt-1">💳 Metode Pembayaran</h2>
+            </div>
+            <div class="grid md:grid-cols-3 gap-6 mb-8">
+                <div class="bg-white p-6 rounded-2xl shadow-sm border text-center flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 bg-brand-100 text-brand-700 rounded-2xl flex items-center justify-center text-xl font-bold mx-auto mb-3"><i class="fa-solid fa-money-bill-wave"></i></div>
+                        <h3 class="font-extrabold text-brand-950 text-base">Tunai (Cash)</h3>
+                        <p class="text-slate-500 text-xs mt-2">Bayar saat pengambilan atau pengiriman barang.</p>
+                    </div>
+                    <div class="text-[11px] text-slate-400 font-medium bg-slate-50 py-2 rounded-xl mt-4">COD / Bayar di Tempat</div>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow-sm border text-center flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 bg-brand-100 text-brand-700 rounded-2xl flex items-center justify-center text-xl font-bold mx-auto mb-3"><i class="fa-solid fa-building-columns"></i></div>
+                        <h3 class="font-extrabold text-brand-950 text-base">Bank BRI</h3>
+                        <p class="text-xs text-slate-500">A.N <span class="font-bold text-brand-800">ANIS LESTARI</span></p>
+                        <div class="bg-slate-50 p-2.5 rounded-xl font-mono font-bold mt-4 text-xs flex items-center justify-between border">
+                            <span id="edit-bri-number">656201033791535</span>
+                            <button onclick="copyToClipboard(document.getElementById('edit-bri-number').innerText, 'BRI')" class="bg-brand-600 text-white text-[10px] px-2.5 py-1 rounded-lg">Salin</button>
+                        </div>
+                    </div>
+                    <div class="text-[11px] text-slate-400 font-medium bg-slate-50 py-2 rounded-xl mt-3">Verifikasi Manual via WA</div>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow-sm border text-center flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 bg-brand-100 text-brand-700 rounded-2xl flex items-center justify-center text-xl font-bold mx-auto mb-3"><i class="fa-solid fa-wallet"></i></div>
+                        <h3 class="font-extrabold text-brand-950 text-base">E-Wallet</h3>
+                        <p class="text-xs text-slate-500">A.N <span class="font-bold text-brand-800">FACHIDATUL AZIZAH</span></p>
+                        <div class="bg-slate-50 p-2.5 rounded-xl font-mono font-bold mt-4 text-xs flex items-center justify-between border">
+                            <span id="edit-ewallet-number">085236509382</span>
+                            <button onclick="copyToClipboard(document.getElementById('edit-ewallet-number').innerText, 'E-Wallet')" class="bg-brand-600 text-white text-[10px] px-2.5 py-1 rounded-lg">Salin</button>
+                        </div>
+                    </div>
+                    <div class="text-[11px] text-slate-400 font-medium bg-slate-50 py-2 rounded-xl mt-3">DANA / OVO</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ULASAN PEMBELI -->
+    <section id="ulasan" class="py-20 max-w-5xl mx-auto px-4">
+        <div class="text-center mb-12">
+            <span id="edit-review-kicker" class="text-brand-600 font-bold text-xs uppercase tracking-widest">Kepuasan Pelanggan</span>
+            <h2 id="edit-review-title" class="text-3xl lg:text-4xl font-extrabold text-brand-950 mt-1">⭐ Ulasan & Penilaian</h2>
+        </div>
+        <div class="bg-white p-7 rounded-2xl shadow-sm border mb-12">
+            <h3 id="edit-review-form-title" class="text-lg font-bold text-brand-950 mb-5">Tulis Ulasan Anda</h3>
+            <form onsubmit="submitReview(event)" class="space-y-5">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1.5">Nama Pembeli:</label>
+                    <input type="text" id="review-name" required placeholder="Nama Anda..." class="w-full p-3 border rounded-xl text-sm bg-slate-50">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1.5">Rating Bintang:</label>
+                    <div class="star-rating flex items-center gap-2 text-2xl" id="star-container">
+                        <i class="fa-solid fa-star" onclick="setRating(1)"></i><i class="fa-solid fa-star" onclick="setRating(2)"></i><i class="fa-solid fa-star" onclick="setRating(3)"></i><i class="fa-solid fa-star" onclick="setRating(4)"></i><i class="fa-solid fa-star" onclick="setRating(5)"></i>
+                        <span id="rating-label" class="text-xs font-bold text-brand-700 ml-2">Pilih Rating</span>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1.5">Komentar / Ulasan Produk:</label>
+                    <textarea id="review-comment" required placeholder="Bagikan kepuasan Anda..." class="w-full p-3 border rounded-xl text-sm h-28 bg-slate-50"></textarea>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1.5">Unggah Foto (Opsional):</label>
+                    <input type="file" id="review-photo" accept="image/*" class="text-xs text-slate-500">
+                </div>
+                <button type="submit" class="bg-brand-600 text-white font-bold px-7 py-3 rounded-xl hover:bg-brand-700 transition text-sm">Kirim Ulasan</button>
+            </form>
+        </div>
+        <div class="space-y-4" id="reviews-list">
+            <div class="bg-white p-6 rounded-2xl shadow-sm border flex justify-between items-start">
+                <div>
+                    <div class="flex items-center gap-3 mb-2">
+                        <h4 class="font-bold text-brand-950 text-sm">Rina Marlina</h4>
+                        <span class="text-accent-gold text-xs font-bold"><i class="fa-solid fa-star"></i> 5/5</span>
+                    </div>
+                    <p class="text-slate-600 text-xs">Bahan ziplock sangat tebal dan kedap. Keripik sukunnya renyah & gurih!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TENTANG KAMI -->
+    <section id="tentang" class="py-20 bg-brand-950 text-white text-center">
+        <div class="max-w-4xl mx-auto px-4">
+            <span id="edit-about-kicker" class="text-brand-300 text-xs font-bold uppercase tracking-widest bg-brand-900 px-3.5 py-1.5 rounded-full inline-block mb-4">🌱 Proyek Edusciencepreneur</span>
+            <h2 id="edit-about-title" class="text-3xl lg:text-4xl font-extrabold mb-5">Tentang ARTIPACK!</h2>
+            <p id="edit-about-desc" class="text-slate-300 text-sm lg:text-base leading-relaxed mb-8 max-w-2xl mx-auto">
+                ARTIPACK menghadirkan kemasan praktis, tahan lama, serta cemilan keripik sukun pilihan untuk membantu produk usaha lokal tampil modern.
+            </p>
+        </div>
+    </section>
+
+    <!-- KONTAK -->
+    <section id="kontak" class="py-20 bg-white">
+        <div class="max-w-5xl mx-auto px-4 text-center">
+            <span id="edit-contact-kicker" class="text-brand-600 font-bold text-xs uppercase tracking-widest">Layanan Pelanggan</span>
+            <h2 id="edit-contact-title" class="text-3xl lg:text-4xl font-extrabold text-brand-950 mt-1 mb-12">📞 Hubungi Kami</h2>
+            <div class="grid md:grid-cols-3 gap-7">
+                <a href="https://wa.me/6285943793412" target="_blank" class="p-7 bg-slate-50 rounded-2xl border flex flex-col items-center">
+                    <div class="w-14 h-14 bg-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center text-2xl mb-4"><i class="fa-brands fa-whatsapp"></i></div>
+                    <h4 id="edit-contact-wa-title" class="font-bold text-brand-950">WhatsApp Admin</h4>
+                    <p id="edit-contact-wa-number" class="text-emerald-700 font-semibold text-xs mt-1">085943793412</p>
+                </a>
+                <a href="mailto:anslstr08@gmail.com" class="p-7 bg-slate-50 rounded-2xl border flex flex-col items-center">
+                    <div class="w-14 h-14 bg-sky-100 text-sky-600 rounded-2xl flex items-center justify-center text-2xl mb-4"><i class="fa-regular fa-envelope"></i></div>
+                    <h4 id="edit-contact-email-title" class="font-bold text-brand-950">Email Resmi</h4>
+                    <p id="edit-contact-email" class="text-sky-700 font-semibold text-xs mt-1">anslstr08@gmail.com</p>
+                </a>
+                <a href="https://maps.google.com/?q=Jl.+Raya+Telang,+Kamal,+Bangkalan" target="_blank" class="p-7 bg-slate-50 rounded-2xl border flex flex-col items-center">
+                    <div class="w-14 h-14 bg-amber-100 text-amber-700 rounded-2xl flex items-center justify-center text-2xl mb-4"><i class="fa-solid fa-location-dot"></i></div>
+                    <h4 id="edit-contact-location-title" class="font-bold text-brand-950">Lokasi Toko</h4>
+                    <p id="edit-contact-location" class="text-slate-500 text-xs mt-1">Jl. Raya Telang, Kamal, Bangkalan</p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-brand-950 text-slate-400 py-8 text-center text-xs border-t border-brand-900">
+        <p id="edit-footer">&copy; 2026 ARTIPACK! — Your Product, Our Packaging. All rights reserved.</p>
+    </footer>
+
+    <!-- MODAL KERANJANG -->
+    <div id="cartModal" class="fixed inset-0 bg-brand-950/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl relative">
+            <button onclick="closeCartModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 text-xl font-bold">&times;</button>
+            <h3 class="text-lg font-bold text-brand-950 mb-4 border-b pb-3">🛒 Keranjang Belanja</h3>
+            <div id="cart-items" class="max-h-60 overflow-y-auto space-y-2 mb-4 text-xs"></div>
+            <div id="cart-footer" class="hidden border-t pt-4">
+                <input type="text" id="buyer-name" placeholder="Nama Lengkap Anda..." class="w-full p-2.5 border rounded-xl text-xs mb-2 bg-slate-50">
+                <div class="mb-3">
+                    <div class="flex items-center justify-between mb-1">
+                        <label class="block text-xs font-semibold text-slate-600">Alamat Pengiriman:</label>
+                        <button type="button" onclick="getShareLocation()" class="text-[11px] bg-brand-50 text-brand-700 font-bold px-2.5 py-1 rounded-lg border flex items-center gap-1">
+                            <i class="fa-solid fa-location-crosshairs"></i> Bagikan Lokasi Saya
+                        </button>
+                    </div>
+                    <textarea id="buyer-address" placeholder="Tulis alamat atau gunakan GPS..." class="w-full p-2.5 border rounded-xl text-xs h-16 bg-slate-50"></textarea>
+                </div>
+                <button onclick="checkoutWA()" class="w-full bg-emerald-600 text-white font-bold py-3 rounded-xl hover:bg-emerald-700 transition text-xs flex items-center justify-center gap-2">
+                    <i class="fa-brands fa-whatsapp text-sm"></i> Kirim Pesanan via WhatsApp
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT -->
+    <script>
+        const DEFAULT_SITE_CONTENT = {
+            promo: "PROMO SPESIAL: FREE ONGKIR KHUSUS AREA TELANG! (Luar Area Telang Ongkir Flat Rp 3.000)", 
+            brand: "ARTIPACK!", 
+            nav1: "Beranda", nav2: "Jam Buka", nav3: "Katalog", nav4: "Pembayaran", nav5: "Ulasan", nav6: "Tentang", nav7: "Kontak", 
+            heroBadge: "Pusat Kemasan & Cemilan Keripik Sukun", 
+            heroTitle: 'Solusi Kemasan <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-300 via-brand-200 to-white">Ziplock & Keripik Lezat</span>', 
+            heroDesc: "Menyediakan standing pouch aluminium foil & window half matte berkualitas tinggi serta keripik sukun renyah khas berkualitas.", 
+            heroBtn1: "Lihat Katalog Produk", heroBtn2: "Info Pembayaran", 
+            hoursTitle: "🕒 Jam Operasional Toko", hoursDesc: "Status operasional otomatis diperbarui secara realtime.", 
+            hoursMain: "Jam Kerja: 08.00 - 20.00 WIB", hoursNote: "Buka Setiap Hari (Kecuali Hari Minggu & Hari Libur Nasional)", 
+            openHour: "08", closeHour: "20", 
+            catalogKicker: "Koleksi Pilihan", catalogTitle: "📦 Katalog Kemasan & Cemilan ARTIPACK", catalogDesc: "Pilihan plastik ziplock kedap udara, stiker custom, serta keripik sukun renyah berkualitas.", 
+            paymentKicker: "Transaksi Aman & Praktis", paymentTitle: "💳 Metode Pembayaran", 
+            cashTitle: "Tunai (Cash)", cashDesc: "Bayar saat pengambilan atau pengiriman barang.", cashNote: "COD / Bayar di Tempat", 
+            briTitle: "Bank BRI", briName: "ANIS LESTARI", briNote: "Verifikasi Manual via WA", 
+            ewalletTitle: "E-Wallet", ewalletName: "FACHIDATUL AZIZAH", ewalletNote: "DANA / OVO", 
+            bri: "656201033791535", ewallet: "085236509382", 
+            reviewKicker: "Kepuasan Pelanggan", reviewTitle: "⭐ Ulasan & Penilaian", reviewFormTitle: "Tulis Ulasan Anda", 
+            aboutKicker: "🌱 Proyek Edusciencepreneur", aboutTitle: "Tentang ARTIPACK!", aboutDesc: "ARTIPACK menghadirkan kemasan praktis, tahan lama, serta cemilan keripik sukun pilihan untuk membantu produk usaha lokal tampil modern.", 
+            contactKicker: "Layanan Pelanggan", contactTitle: "📞 Hubungi Kami", 
+            waTitle: "WhatsApp Admin", waDisplay: "085943793412", wa: "6285943793412", 
+            emailTitle: "Email Resmi", email: "anslstr08@gmail.com", 
+            locationTitle: "Lokasi Toko", location: "Jl. Raya Telang, Kamal, Bangkalan", mapUrl: "https://maps.google.com/?q=Jl.+Raya+Telang,+Kamal,+Bangkalan", 
+            footer: "© 2026 ARTIPACK! — Your Product, Our Packaging. All rights reserved.", 
+            p1Name: "Plastik Ziplock Saja", p1Desc: "Standing Pouch Ziplock Aluminium Foil Silver kedap udara.", p1Note: "Tidak menerima Ziplock Sablon", p1Min: "10 pcs", 
+            p2Name: "Ziplock + Stiker", p2Desc: "Standing pouch Window Half Matte + stiker pilihan.", p2Note: "", p2Min: "10 pcs", 
+            p3Name: "Bundling Keripik Sukun", p3Desc: "Paket lengkap Ziplock + Stiker + Isi Keripik Sukun renyah.", p3Note: "", p3Min: "10 pcs", 
+            p4Name: "Custom Stiker", p4Desc: "Cetak stiker produk custom berkualitas HD.", p4Note: "", p4Min: "10 pcs"
+        };
+
+        function getSiteContent() { return {...DEFAULT_SITE_CONTENT, ...JSON.parse(localStorage.getItem('artipack_site_content') || '{}')}; }
+        function setText(id, value) { const el = document.getElementById(id); if(el) el.textContent = value; }
+        function setHTML(id, value) { const el = document.getElementById(id); if(el) el.innerHTML = value; }
+        
+        function applySiteContent() {
+            const c = getSiteContent();
+            const promo = document.querySelector('#promo-banner-text'); if(promo) promo.innerHTML = c.promo;
+            setText('edit-nav1', c.nav1); setText('edit-nav2', c.nav2); setText('edit-nav3', c.nav3); setText('edit-nav4', c.nav4); setText('edit-nav5', c.nav5); setText('edit-nav6', c.nav6); setText('edit-nav7', c.nav7);
+            const brandEls = document.querySelectorAll('nav span.text-2xl, nav span.text-3xl'); if(brandEls.length) brandEls[0].textContent = c.brand;
+            setText('edit-hero-badge', c.heroBadge); setHTML('edit-hero-title', c.heroTitle); setText('edit-hero-desc', c.heroDesc); setText('edit-hero-btn1', c.heroBtn1); setText('edit-hero-btn2', c.heroBtn2);
+            setText('edit-hours-title', c.hoursTitle); setText('edit-hours-desc', c.hoursDesc); setText('edit-hours-main', c.hoursMain); setText('edit-hours-note', c.hoursNote);
+            setText('edit-catalog-kicker', c.catalogKicker); setText('edit-catalog-title', c.catalogTitle); setText('edit-catalog-desc', c.catalogDesc);
+            for(let i=1; i<=4; i++){
+                setText(`edit-p${i}-name`, c[`p${i}Name`]); 
+                setText(`edit-p${i}-desc`, c[`p${i}Desc`]); 
+                const n = document.getElementById(`edit-p${i}-note`); 
+                if(n){
+                    n.innerHTML = i === 1 ? '<i class="fa-solid fa-ban text-xs"></i> ' + c[`p${i}Note`] : c[`p${i}Note`]; 
+                    n.style.display = c[`p${i}Note`] ? '' : 'none';
+                }
+            }
+            const p1min = document.getElementById('edit-p1-min'); if(p1min) p1min.textContent = 'Min. Order: ' + c.p1Min;
+            setText('edit-payment-kicker', c.paymentKicker); setText('edit-payment-title', c.paymentTitle);
+            
+            const cashTitle = document.querySelector('#pembayaran .grid > div:nth-child(1) h3'); 
+            const cashDesc = document.querySelector('#pembayaran .grid > div:nth-child(1) p'); 
+            const cashNote = document.querySelector('#pembayaran .grid > div:nth-child(1) div:last-child'); 
+            if(cashTitle) cashTitle.textContent = c.cashTitle; if(cashDesc) cashDesc.textContent = c.cashDesc; if(cashNote) cashNote.textContent = c.cashNote;
+            
+            const briTitle = document.querySelector('#pembayaran .grid > div:nth-child(2) h3'); 
+            const briName = document.querySelector('#pembayaran .grid > div:nth-child(2) p span'); 
+            const briNote = document.querySelector('#pembayaran .grid > div:nth-child(2) div:last-child'); 
+            if(briTitle) briTitle.textContent = c.briTitle; if(briName) briName.textContent = c.briName; if(briNote) briNote.textContent = c.briNote; 
+            setText('edit-bri-number', c.bri);
+            
+            const ewTitle = document.querySelector('#pembayaran .grid > div:nth-child(3) h3'); 
+            const ewName = document.querySelector('#pembayaran .grid > div:nth-child(3) p span'); 
+            const ewNote = document.querySelector('#pembayaran .grid > div:nth-child(3) div:last-child'); 
+            if(ewTitle) ewTitle.textContent = c.ewalletTitle; if(ewName) ewName.textContent = c.ewalletName; if(ewNote) ewNote.textContent = c.ewalletNote; 
+            setText('edit-ewallet-number', c.ewallet);
+            
+            setText('edit-review-kicker', c.reviewKicker); setText('edit-review-title', c.reviewTitle); setText('edit-review-form-title', c.reviewFormTitle); 
+            setText('edit-about-kicker', c.aboutKicker); setText('edit-about-title', c.aboutTitle); setText('edit-about-desc', c.aboutDesc); 
+            setText('edit-contact-kicker', c.contactKicker); setText('edit-contact-title', c.contactTitle); 
+            setText('edit-contact-wa-title', c.waTitle); setText('edit-contact-wa-number', c.waDisplay); 
+            setText('edit-contact-email-title', c.emailTitle); setText('edit-contact-email', c.email); 
+            setText('edit-contact-location-title', c.locationTitle); setText('edit-contact-location', c.location); 
+            setText('edit-footer', c.footer);
+            
+            const wa = document.querySelector('#kontak a[href^="https://wa.me/"]'); if(wa) wa.href = 'https://wa.me/' + c.wa; 
+            const mail = document.querySelector('#kontak a[href^="mailto:"]'); if(mail) mail.href = 'mailto:' + c.email; 
+            const map = document.querySelector('#kontak a[href^="https://maps.google.com/"]'); if(map) map.href = c.mapUrl;
+            window.adminWA = c.wa || window.adminWA;
+        }
+
+        window.addEventListener('storage', e => {
+            if(e.key === 'artipack_site_content' || e.key === 'artipack_settings'){
+                applySiteContent(); 
+                if(typeof checkBusinessHours === 'function') checkBusinessHours();
+            }
+        });
+
+        let cart = [];
+        let selectedRating = 0;
+        const savedSettings = JSON.parse(localStorage.getItem('artipack_settings') || '{}');
+        const adminWA = savedSettings.wa || "6285943793412";
+        const ratingLabels = { 1: "1 Star", 2: "2 Stars", 3: "3 Stars", 4: "4 Stars", 5: "5 Stars" };
+
+        function copyToClipboard(text, name) {
+            navigator.clipboard.writeText(text).then(() => alert(`Nomor ${name} disalin!`));
+        }
+
+        function checkBusinessHours() {
+            const now = new Date();
+            const day = now.getDay(); 
+            const hours = now.getHours();
+            const settings = JSON.parse(localStorage.getItem('artipack_settings') || '{}');
+            const site = getSiteContent(); 
+            const openHour = parseInt(site.openHour || '8', 10); 
+            const closeHour = parseInt(site.closeHour || '20', 10); 
+            let isOpen = (day !== 0 && hours >= openHour && hours < closeHour);
+            
+            if (settings.storeStatus === 'force_open') isOpen = true;
+            if (settings.storeStatus === 'force_close') isOpen = false;
+
+            const badgeDot = document.getElementById('nav-status-dot');
+            const badgeText = document.getElementById('nav-status-text');
+            const statusCard = document.getElementById('status-card');
+            const statusIndicator = document.getElementById('status-indicator');
+
+            if (isOpen) {
+                badgeDot.className = "w-2 h-2 rounded-full bg-emerald-400 animate-pulse";
+                badgeText.innerText = "BUKA"; badgeText.className = "text-emerald-300 font-bold";
+                statusCard.className = "p-6 rounded-2xl shadow-sm border border-emerald-300 bg-emerald-50/40 flex flex-col md:flex-row items-center justify-between gap-4";
+                statusIndicator.className = "px-5 py-2.5 rounded-xl font-extrabold text-xs bg-emerald-600 text-white flex items-center gap-2";
+                statusIndicator.innerHTML = '<i class="fa-solid fa-circle-check"></i> 🟢 TOKO SEDANG BUKA';
+            } else {
+                badgeDot.className = "w-2 h-2 rounded-full bg-rose-500";
+                badgeText.innerText = "TUTUP"; badgeText.className = "text-rose-300 font-bold";
+                statusCard.className = "p-6 rounded-2xl shadow-sm border border-rose-200 bg-rose-50/40 flex flex-col md:flex-row items-center justify-between gap-4";
+                statusIndicator.className = "px-5 py-2.5 rounded-xl font-extrabold text-xs bg-rose-600 text-white flex items-center gap-2";
+                statusIndicator.innerHTML = '<i class="fa-solid fa-circle-xmark"></i> 🔴 TOKO SEDANG TUTUP';
+            }
+        }
+
+        function getShareLocation() {
+            if (!navigator.geolocation) { alert("Geolokasi tidak didukung."); return; }
+            const addr = document.getElementById('buyer-address');
+            addr.placeholder = "Mengambil koordinat GPS...";
+            navigator.geolocation.getCurrentPosition((pos) => {
+                const link = `https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`;
+                addr.value = (addr.value ? addr.value + " — " : "") + `[GPS: ${link}]`;
+                alert("GPS berhasil disematkan!");
+            }, () => { alert("Gagal mengambil GPS."); });
+        }
+
+        function fetchGPSForDirectOrder(cb) {
+            if (!navigator.geolocation) { cb(null); return; }
+            navigator.geolocation.getCurrentPosition((pos) => cb(`https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`), () => cb(null));
+        }
+
+        function addToCart(title, selectId) {
+            cart.push(`${title} [${document.getElementById(selectId).value}]`);
+            updateCartUI();
+            openCartModal();
+        }
+
+        function addPaket2ToCart() {
+            cart.push(`Paket 2: Ziplock + Stiker [Pouch: ${document.getElementById('size-p2').value}, Stiker: ${document.getElementById('sticker-size-p2').value}]`);
+            updateCartUI();
+            openCartModal();
+        }
+
+        function addPaket4ToCart() {
+            cart.push(`Paket 4: Custom Stiker [Jml: ${document.getElementById('qty-sticker-p4').value}, Ukuran: ${document.getElementById('size-sticker-p4').value}]`);
+            updateCartUI();
+            openCartModal();
+        }
+
+        function orderDirectWAWithGPS(title, selectId) {
+            alert("Mendeteksi lokasi GPS...");
+            fetchGPSForDirectOrder((gps) => {
+                let msg = `Halo Admin ARTIPACK! Order:\n\n*Produk:* ${title}\n*Opsi:* ${document.getElementById(selectId).value}`;
+                if (gps) msg += `\n*GPS:* ${gps}`;
+                saveDirectOrderToSeller(`${title} [${document.getElementById(selectId).value}]`, gps);
+                window.open(`https://wa.me/${adminWA}?text=${encodeURIComponent(msg)}`, '_blank');
+            });
+        }
+
+        function orderDirectWAPaket2WithGPS() {
+            alert("Mendeteksi lokasi GPS...");
+            fetchGPSForDirectOrder((gps) => {
+                let msg = `Halo Admin ARTIPACK! Order:\n\n*Produk:* ${getSiteContent().p2Name}\n*Pouch:* ${document.getElementById('size-p2').value}\n*Stiker:* ${document.getElementById('sticker-size-p2').value}`;
+                if (gps) msg += `\n*GPS:* ${gps}`;
+                saveDirectOrderToSeller(`Paket 2: ${getSiteContent().p2Name} [Pouch: ${document.getElementById('size-p2').value}, Stiker: ${document.getElementById('sticker-size-p2').value}]`, gps);
+                window.open(`https://wa.me/${adminWA}?text=${encodeURIComponent(msg)}`, '_blank');
+            });
+        }
+
+        function orderDirectWAPaket4WithGPS() {
+            alert("Mendeteksi lokasi GPS...");
+            fetchGPSForDirectOrder((gps) => {
+                let msg = `Halo Admin ARTIPACK! Order:\n\n*Produk:* ${getSiteContent().p4Name}\n*Jml:* ${document.getElementById('qty-sticker-p4').value} pcs\n*Ukuran:* ${document.getElementById('size-sticker-p4').value}`;
+                if (gps) msg += `\n*GPS:* ${gps}`;
+                saveDirectOrderToSeller(`Paket 4: ${getSiteContent().p4Name} [Jml: ${document.getElementById('qty-sticker-p4').value} pcs, Ukuran: ${document.getElementById('size-sticker-p4').value}]`, gps);
+                window.open(`https://wa.me/${adminWA}?text=${encodeURIComponent(msg)}`, '_blank');
+            });
+        }
+
+        function removeFromCart(i) { cart.splice(i, 1); updateCartUI(); }
+        
+        function updateCartUI() {
+            document.getElementById('cart-count').innerText = cart.length;
+            const container = document.getElementById('cart-items');
+            const footer = document.getElementById('cart-footer');
+            if (cart.length === 0) {
+                container.innerHTML = '<p class="text-slate-400 text-center py-6">Keranjang kosong.</p>';
+                footer.classList.add('hidden');
+            } else {
+                container.innerHTML = cart.map((it, idx) => `<div class="flex justify-between items-center bg-slate-50 p-3 rounded-xl border"><span>${it}</span><button onclick="removeFromCart(${idx})" class="text-rose-500 font-bold">&times;</button></div>`).join('');
+                footer.classList.remove('hidden');
+            }
+        }
+
+        function openCartModal() { document.getElementById('cartModal').classList.remove('hidden'); }
+        function closeCartModal() { document.getElementById('cartModal').classList.add('hidden'); }
+
+        function saveOrderToSeller(order) {
+            const orders = JSON.parse(localStorage.getItem('artipack_orders') || '[]');
+            orders.unshift({
+                id: 'ORD-' + Date.now(),
+                name: order.name,
+                product: order.product,
+                payment: order.payment || 'Belum dipilih',
+                address: order.address || '-',
+                status: 'Pending / Belum Lunas',
+                createdAt: new Date().toLocaleString('id-ID')
+            });
+            localStorage.setItem('artipack_orders', JSON.stringify(orders));
+        }
+
+        function saveDirectOrderToSeller(product, gps = null) {
+            saveOrderToSeller({
+                name: 'Pesanan WhatsApp',
+                product: product,
+                payment: 'Belum dipilih',
+                address: gps || 'Lokasi belum dibagikan'
+            });
+        }
+
+        function checkoutWA() {
+            const name = document.getElementById('buyer-name').value.trim();
+            const addr = document.getElementById('buyer-address').value.trim();
+            if (!name || !addr) { alert('Lengkapi nama dan alamat!'); return; }
+
+            const productText = cart.map((it, i) => `${i+1}. ${it}`).join('\n');
+            saveOrderToSeller({
+                name: name,
+                product: productText,
+                payment: 'Belum dipilih',
+                address: addr
+            });
+
+            const text = `Order Keranjang:\n${productText}\n\n*Nama:* ${name}\n*Alamat:* ${addr}`;
+            window.open(`https://wa.me/${adminWA}?text=${encodeURIComponent(text)}`, '_blank');
+            alert('Pesanan tersimpan dan diteruskan ke WhatsApp Admin.');
+        }
+
+        function setRating(s) {
+            selectedRating = s;
+            document.querySelectorAll('#star-container i').forEach((el, i) => el.classList.toggle('active', i < s));
+            document.getElementById('rating-label').innerText = ratingLabels[s];
+        }
+
+        function submitReview(e) {
+            e.preventDefault();
+            if (selectedRating === 0) { alert('Pilih bintang!'); return; }
+            const name = document.getElementById('review-name').value;
+            const comment = document.getElementById('review-comment').value;
+            
+            const card = document.createElement('div');
+            card.className = 'bg-white p-6 rounded-2xl shadow-sm border flex justify-between items-start';
+            card.innerHTML = `<div><div class="flex items-center gap-3 mb-2"><h4 class="font-bold text-brand-950 text-sm">${name}</h4><span class="text-accent-gold text-xs font-bold"><i class="fa-solid fa-star"></i> ${selectedRating}/5</span></div><p class="text-slate-600 text-xs">${comment}</p></div>`;
+            document.getElementById('reviews-list').prepend(card);
+            alert('Ulasan terkirim!');
+            e.target.reset(); setRating(0);
+        }
+
+        window.addEventListener("load", () => { applySiteContent(); checkBusinessHours(); });
+    </script>
+</body>
+</html>
